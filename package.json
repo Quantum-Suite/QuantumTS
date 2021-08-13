@@ -1,0 +1,17 @@
+{
+    "name": "QuantumTS",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "experimental-specifier-resolution": "node",
+    "author": "neilshirsat <neilshirsat2015@gmail.com>",
+    "license": "Apache 2.0",
+    "private": true,
+    "devDependencies": {
+        "@types/node": "^16.6.1",
+        "typescript": "^4.3.5"
+    },
+    "dependencies": {
+        "reflect-metadata": "^0.1.13"
+    }
+}
