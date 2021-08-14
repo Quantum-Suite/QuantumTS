@@ -150,7 +150,7 @@ class IoC {
                     if ( e.type.name === i.name ) {
 
                         //If the Dependency Value is Not Initialized Yet, then Initialize it First
-                        if ( i.value === {} && e.isNotClass ) {
+                        if ( i.value === {} && !e.isNotClass ) {
 
                             //Construct the Dependency Value
                             i.value = new i.construct( ...this.getInitConstructionParam( i.injectParams ) );
