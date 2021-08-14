@@ -8,8 +8,8 @@
 
 import { HttpRequest, HttpResponse } from "../server/HTTP";
 
-export interface CanRoute {
+export interface onDestroy {
 
-    handle( req : HttpRequest, res : HttpResponse ) : void;
+    onDestroy() : void;
 
 }

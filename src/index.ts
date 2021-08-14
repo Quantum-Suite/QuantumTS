@@ -1,21 +1,23 @@
+import 'reflect-metadata';
 import { Route } from './router/Route';
-import { Server } from './server/Server'
-import 'reflect-metadata'
 import { Inject } from './meta/Inject';
-import Router from './router/Router';
-import IoC from './meta/IoC';
 import { Application } from './controllers/Application';
 import { CanRoute } from './router/CanRoute';
-import { Http2ServerRequest, Http2ServerResponse } from 'http2';
+import { HttpRequest, HttpResponse } from './server/HTTP';
+import { readFileSync } from 'fs';
+import { ServerConfig } from './server/ServerConfig';
 
 @Route({
     path : '/',
     method : 'GET',
+    temp : true,
 })
 class RouteA implements CanRoute {
 
-    handle( req : Http2ServerRequest, res : Http2ServerResponse ): void {
-        res.end('RouteA')
+    x = 0;
+
+    handle( req : HttpRequest, res : HttpResponse ): void {
+        res.end(`RouteA ${this.x++} `);
     }
 
 }
@@ -28,14 +30,18 @@ class RouteB implements CanRoute {
 
     constructor( public x : RouteA,  public y : RouteA, @Inject("Hello") public z : string ){}
 
-    handle( req : Http2ServerRequest, res : Http2ServerResponse ): void {
-        res.end('RouteB')
+    handle( req : HttpRequest, res : HttpResponse ): void {
+        res.end(`Route B Injected Param ${this.z}`)
     }
 
-    hello( @Inject( "From Hello Method" ) x : string ){
+}
 
+const config : ServerConfig = {
+    ServerOptions : {
+        key : readFileSync('C:\\Users\\neila\\Documents\\Proxima\\QuantumTS\\src\\keys\\server.key'),
+        cert: readFileSync('C:\\Users\\neila\\Documents\\Proxima\\QuantumTS\\src\\keys\\server.cert'),
     }
 }
 
 const app = new Application();
-app.start();
+app.start(config);

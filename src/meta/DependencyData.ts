@@ -23,4 +23,8 @@ export type DependencyData = {
 
     injectParams : InjectData[],
 
+    value : any,
+
+    temp ?: boolean
+
 }

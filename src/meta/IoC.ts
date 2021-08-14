@@ -103,12 +103,16 @@ class IoC {
      */
     linkDependencyParam(){
 
-        for (let e of this.injectionParameters) {
-            for (let i of this.dependencies) {
+        for (let e of this.dependencies) {
+
+            for (let i of this.injectionParameters) {
                 if (e.name == i.name) {
-                    i.injectParams[e.paramIndex].value = e.value;
+                    e.injectParams[i.paramIndex].value = i.value;
                 }
             }
+
+            e.value = new e.construct( ...this.getConstructionParam( e.injectParams ) );
+
         }
 
     }
@@ -148,7 +152,10 @@ class IoC {
     getDependency( name : string ){
         for ( let e of this.dependencies ) {
             if (e.name === name) {
-                return new e.construct( ...this.getConstructionParam( e.injectParams ) );
+                if (e.temp) {
+                    return new e.construct(...this.getConstructionParam(e.injectParams))
+                }
+                return e.value;
             }
         }
     }

@@ -6,23 +6,22 @@
  *
  */
 
-import { InjectData } from "../meta/InjectData";
 import IoC from "../meta/IoC";
-import Router from "../router/Router";
 import { Server } from '../server/Server'
+import { ServerConfig } from "../server/ServerConfig";
 
 export class Application {
 
     server : Server;
 
-    constructor() {
+    constructor() {}
 
-        this.server = new Server();
-
-    }
-
-    start(){
+    start(
+        serverConfig : ServerConfig
+    ){
         IoC.linkDependencyParam();
+        this.server = new Server(serverConfig);
+        this.server.start();
         this.server.listen( 8021 );
     }
 

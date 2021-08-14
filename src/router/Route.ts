@@ -8,7 +8,7 @@
 
 import IoC from "../meta/IoC";
 import { resolver } from "../meta/Resolver";
-import { RouteConfig, RouteConfiguration } from "./RouteConfig";
+import { RouteConfiguration } from "./RouteConfig";
 import Router from "./Router";
 import { CanRoute } from './CanRoute'
 
@@ -40,13 +40,16 @@ export function Route( config : RouteConfiguration ): Function {
         Router.addRoute({
             name : constructor.name,
             path : config.path,
-            method : config.method
+            method : config.method,
+            temp : config.temp
         })
 
         IoC.addDependency({
             name : constructor.name,
             construct : constructor,
             injectParams : resolver(constructor),
+            value : {},
+            temp : config.temp,
         })
 
     }

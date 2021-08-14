@@ -7,9 +7,11 @@
  */
 
 
-import { createSecureServer, Http2SecureServer, Http2ServerRequest, Http2ServerResponse } from 'http2'
 import { readFileSync } from 'fs'
+import { KeyObject } from 'tls';
 import Router from '../router/Router';
+import { createSecureServer, HttpRequest, HttpResponse, HttpServerOptions, HttpsServer, HttpStream, IncomingHttpHeaders } from './HTTP';
+import { ServerConfig } from './ServerConfig';
 
 
 export class Server {
@@ -17,10 +19,36 @@ export class Server {
     /**
      *
      * @description
+     * Provides the Instance of the Server for the Application
+     *
+     */
+    server : HttpsServer
+
+
+
+
+    /**
+     *
+     * @description
+     * Configuration for the Server
+     *
+     */
+    config : ServerConfig
+
+
+
+
+    /**
+     *
+     * @description
      * Constructs the Server Object adding the Dependencies
      *
      */
-    constructor() { }
+    constructor(
+        config : ServerConfig
+    ) {
+        this.config = config;
+    }
 
 
 
@@ -31,15 +59,17 @@ export class Server {
      * Starts the HTTP Server and returns a copy of the started
      * HTTP Server
      *
-     * @param {number} PORT
+     * @param
      *
      * @returns {Http2SecureServer}
      *
      */
-    start(
-    ): Http2SecureServer {
+    start(): void {
 
-        return createSecureServer();
+        this.server = createSecureServer(this.config.ServerOptions);
+        this.server.on('request', this.onRequest )
+        this.server.on('stream', this.onStream )
+
     }
 
 
@@ -55,19 +85,10 @@ export class Server {
      */
     listen(
         port : number,
-        address ?: string,
+        hostAddress ?: string,
     ) {
 
-        let server = createSecureServer({
-            key : readFileSync('C:\\Users\\neila\\Documents\\Proxima\\QuantumTS\\src\\keys\\server.key'),
-            cert : readFileSync('C:\\Users\\neila\\Documents\\Proxima\\QuantumTS\\src\\keys\\server.cert')
-        });
-
-        server.on('request', this.handle )
-
-        server.on('error', (err) => console.error(err));
-
-        server.listen( port, ()=>{
+        this.server.listen( port, hostAddress, ()=>{
             console.log(`Server is Running at https://localhost:${port}`)
         });
 
@@ -84,8 +105,12 @@ export class Server {
      * correct path
      *
      */
-    handle( req : Http2ServerRequest, res : Http2ServerResponse ) : void {
+    onRequest( req : HttpRequest, res : HttpResponse ) : void {
         Router.route(req, res);
+    }
+
+    onStream( stream : HttpStream, header : IncomingHttpHeaders, flags : number ){
+
     }
 
 }

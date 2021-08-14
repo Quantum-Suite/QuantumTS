@@ -12,6 +12,8 @@ export type RouteConfiguration = {
 
     method : 'GET' | 'POST' | 'PUT' | 'DELETE';
 
+    temp ?: boolean;
+
 }
 
 /**
