@@ -111,9 +111,63 @@ class IoC {
                 }
             }
 
-            e.value = new e.construct( ...this.getConstructionParam( e.injectParams ) );
+        }
+
+        for (let e of this.dependencies) {
+
+            e.value = new e.construct( ...this.getInitConstructionParam( e.injectParams ) );
 
         }
+
+    }
+
+
+
+
+    /**
+     *
+     * @description
+     * Gets the Parameters to Construct the Object and
+     * return these param
+     *
+     * @param {InjectData} param
+     * @returns {any[]}
+     */
+    getInitConstructionParam( param : InjectData[] ) : any[] {
+
+        const args : any[] = [];
+
+        //For Each of the Parameters
+        for ( let e of param ) {
+
+            //If the Parameters Value is Undefined
+            if (e.value === undefined) {
+
+                //Loop Through the Dependencies to Find the Value Dependency
+                for (let i of this.dependencies) {
+
+                    //Found the Value
+                    if ( e.type.name === i.name ) {
+
+                        //If the Dependency Value is Not Initialized Yet, then Initialize it First
+                        if ( i.value === {} && e.isNotClass ) {
+
+                            //Construct the Dependency Value
+                            i.value = new i.construct( ...this.getInitConstructionParam( i.injectParams ) );
+
+                        }
+
+                        //Set the Value to the Dependency Value
+                        e.value = i.value;
+                    }
+                }
+            }
+
+            args.push( e.value )
+
+        }
+
+        return args;
 
     }
 

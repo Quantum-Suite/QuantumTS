@@ -6,6 +6,17 @@ import { CanRoute } from './router/CanRoute';
 import { HttpRequest, HttpResponse } from './server/HTTP';
 import { readFileSync } from 'fs';
 import { ServerConfig } from './server/ServerConfig';
+import { Injectable } from './meta/Injectable';
+
+@Injectable({})
+class SharedService {
+    common = "From Shared Service";
+    count = 0;
+    id : number;
+    constructor(){
+        this.id = Math.random();
+    }
+}
 
 @Route({
     path : '/',
@@ -16,8 +27,10 @@ class RouteA implements CanRoute {
 
     x = 0;
 
+    constructor( public shared : SharedService ){}
+
     handle( req : HttpRequest, res : HttpResponse ): void {
-        res.end(`RouteA ${this.x++} `);
+        res.end(`RouteA ${this.shared.common} ${this.shared.count++} ${this.shared.id}`);
     }
 
 }
@@ -28,10 +41,10 @@ class RouteA implements CanRoute {
 })
 class RouteB implements CanRoute {
 
-    constructor( public x : RouteA,  public y : RouteA, @Inject("Hello") public z : string ){}
+    constructor( public x : RouteA,  public y : RouteA, @Inject("Hello") public z : string, public shared : SharedService ){}
 
     handle( req : HttpRequest, res : HttpResponse ): void {
-        res.end(`Route B Injected Param ${this.z}`)
+        res.end(`Route B ${this.shared.common} ${this.shared.count++} ${this.shared.id}`)
     }
 
 }
