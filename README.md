@@ -1,13 +1,13 @@
 # QuantumTS
 
-# Description
+## Description
 
 QuantumTS is a fast and minimalitic framework for creating powerful NodeJS
 Applications. It generates IoC Containers and Injects Dependencies into the
 different parts of the framework in order to enhance the speed of the
 application and maintain consitency in the dependencies of the Application.
 
-# Examples
+## Examples
 
 ```ts
 
