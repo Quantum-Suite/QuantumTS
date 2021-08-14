@@ -1,60 +1,77 @@
 import 'reflect-metadata';
-import { Route } from './router/Route';
-import { Inject } from './meta/Inject';
-import { Application } from './controllers/Application';
-import { CanRoute } from './router/CanRoute';
-import { HttpRequest, HttpResponse } from './server/HTTP';
-import { readFileSync } from 'fs';
-import { ServerConfig } from './server/ServerConfig';
-import { Injectable } from './meta/Injectable';
 
-@Injectable({})
-class SharedService {
-    common = "From Shared Service";
-    count = 0;
-    id : number;
-    constructor(){
-        this.id = Math.random();
-    }
-}
+/**
+ *
+ *
+ *
+ *
+ *
+ * QuantumTS Application
+ *
+ *
+ *
+ *
+ *
+ */
+export { Application } from './controllers/Application'
 
-@Route({
-    path : '/',
-    method : 'GET',
-    temp : true,
-})
-class RouteA implements CanRoute {
 
-    x = 0;
+/**
+ *
+ *
+ *
+ *
+ *
+ * QuantumTS IoC
+ *
+ *
+ *
+ *
+ *
+ */
+export { default as IoC } from './meta/IoC'
+export { constructorInjection } from './meta/ConstructorInjection'
+export { DependencyData } from './meta/DependencyData'
+export { Inject } from './meta/Inject'
+export { InjectData } from './meta/InjectData'
+export { Injectable } from './meta/Injectable'
+export { InjectableConfig } from './meta/InjectableConfig'
+export { resolver } from './meta/Resolver'
 
-    constructor( public shared : SharedService ){}
 
-    handle( req : HttpRequest, res : HttpResponse ): void {
-        res.end(`RouteA ${this.shared.common} ${this.shared.count++} ${this.shared.id}`);
-    }
+/**
+ *
+ *
+ *
+ *
+ *
+ * QuantumTS Server
+ *
+ *
+ *
+ *
+ *
+ */
+export { Server } from './server/Server'
+export { ServerConfig } from './server/ServerConfig'
+export * from './server/HTTP'
 
-}
 
-@Route({
-    path : '/b',
-    method : 'GET'
-})
-class RouteB implements CanRoute {
-
-    constructor( public x : RouteA,  public y : RouteA, @Inject("Hello") public z : string, public shared : SharedService ){}
-
-    handle( req : HttpRequest, res : HttpResponse ): void {
-        res.end(`Route B ${this.shared.common} ${this.shared.count++} ${this.shared.id}`)
-    }
-
-}
-
-const config : ServerConfig = {
-    ServerOptions : {
-        key : readFileSync('C:\\Users\\neila\\Documents\\Proxima\\QuantumTS\\src\\keys\\server.key'),
-        cert: readFileSync('C:\\Users\\neila\\Documents\\Proxima\\QuantumTS\\src\\keys\\server.cert'),
-    }
-}
-
-const app = new Application();
-app.start(config);
+/**
+ *
+ *
+ *
+ *
+ *
+ * QuantumTS Routing
+ *
+ *
+ *
+ *
+ *
+ */
+export { default as Router } from './router/Router';
+export { RouteConfig, RouteConfiguration } from './router/RouteConfig';
+export { Route } from './router/Route';
+export { CanRoute } from './router/CanRoute';
+export { onDestroy } from './router/onDestroy'
