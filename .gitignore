@@ -80,3 +80,6 @@ typings/
 
 #Keys
 /src/keys
+
+#Bin
+/bin
