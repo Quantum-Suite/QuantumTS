@@ -83,13 +83,10 @@ export class Server {
      *
      *
      */
-    listen(
-        port : number,
-        hostAddress ?: string,
-    ) {
+    listen() {
 
-        this.server.listen( port, hostAddress, ()=>{
-            console.log(`Server is Running at https://localhost:${port}`)
+        this.server.listen( this.config.port, this.config.hostAddress, ()=>{
+            console.log(`Server is Running at https://${this.config.hostAddress}:${this.config.port}`)
         });
 
     }

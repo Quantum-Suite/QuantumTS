@@ -22,7 +22,7 @@ export class Application {
         IoC.linkDependencyParam();
         this.server = new Server(serverConfig);
         this.server.start();
-        this.server.listen( 8021 );
+        this.server.listen();
     }
 
 }

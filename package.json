@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "main": "index.js",
     "type": "module",
-    "experimental-specifier-resolution": "node",
     "author": "neilshirsat <neilshirsat2015@gmail.com>",
     "license": "Apache 2.0",
     "private": true,
