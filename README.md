@@ -9,6 +9,8 @@ application and maintain consitency in the dependencies of the Application.
 
 More Tools, API and a CLI are coming soon to the project
 
+Also Documentation will be added for the project
+
 ## Examples
 
 ```ts
