@@ -7,6 +7,8 @@ Applications. It generates IoC Containers and Injects Dependencies into the
 different parts of the framework in order to enhance the speed of the
 application and maintain consitency in the dependencies of the Application.
 
+More Tools, API and a CLI are coming soon to the project
+
 ## Examples
 
 ```ts
